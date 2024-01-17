@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        body{
+            background-attachment: fixed;
+            background-repeat: no-repeat;
+            background-position: center;
+            background-image: url("bg.jpg");
+            background-size: cover;
+        }
+        form{
+            text-align: center;
+            color: azure;
+            opacity: 1;
+        }
+        
+    </style>
+    
+</head>
+<body>
+    <form>
+        <br><br><br><br><br><br><br><br>
+        <label>Enter your text:</label>
+        <input  type="text" id="text" name="text" placeholder="enter here"><br><br>
+        Select your choice<br><br>
+        <input type="radio" id="barcode" name="value" value="barcode">
+        <label for="barcode">BAR CODE</label><br><br>
+        <input type="radio" id="qrcode" name="value" value="qrcode">
+        <label for="qrcode">QR CODE</label><br><br>
+        <input type="button" value="Generate Image" onclick="generateImage()">
+        <br><br>
+        <div id="imageContainer"></div>
+    </form>
+
+    
+
+    <script>
+        function generateImage() {
+            var textValue = document.getElementById("text").value;
+            var selectedRadio = document.querySelector('input[name="value"]:checked');
+
+            if (textValue && selectedRadio) {
+                var imageUrl = "";
+                if (selectedRadio.value === "barcode") {
+                    imageUrl = generateBarcodeImageUrl(textValue);
+                } else if (selectedRadio.value === "qrcode") {
+                    imageUrl = generateQRCodeImageUrl(textValue);
+                }
+                var image = document.createElement("img");
+                image.src = imageUrl;
+                var imageContainer = document.getElementById("imageContainer");
+                imageContainer.innerHTML = "";
+                imageContainer.appendChild(image);
+            } else {
+                alert("Please enter text and select an option.");
+            }
+        }
+        function generateBarcodeImageUrl(text) {
+            return "https://barcodeapi.org/api/auto/" + encodeURIComponent(text);    
+        }
+        function generateQRCodeImageUrl(text) {   
+            return "https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=" + encodeURIComponent(text);
+        }
+    </script>
+</body>
+</html>
+
+
